@@ -1,40 +1,47 @@
-create table if not exists artist_list(
+create table if not exists musicians (
 	id serial primary key,
-	Name varchar(255) not null,
-	Alias varchar(80) not null);
+	musician text,
+	nickname text
+);
+create table if not exists albums (
+	id serial  primary key,
+	name_album text,
+	year_of_release_album integer
+);
 
-create table if not exists artist_in_genre(
+create table if not exists tracks (
 	id serial primary key,
-	artist_id integer not null references artist_list(id),
-	genre_id integer not null references Genre_List(id));
+	name_track text,
+	duration numeric,
+	album_id  integer references albums(id)
+);
 
-create table if not exists Genre_list(
+create table if not exists genres (
 	id serial primary key,
-	Genre_Name  varchar(80) not null,
+	name_genre text
+);
 
-create table if not exists artist_album(
-	id  serial primary key,
-	artist_id integer not null references artist_list(id),
-	album_id integer not null references album_List(id));
-
-create table if not exists album_List (
+create table if not exists digests (
 	id serial primary key,
-	album_name varchar(80) not null,
-	release_date varchar(80) not null);
+	name_digest text,
+	year_of_release_digest integer
+);
 
-create table if not exists Track_List (
+create table if not exists genre_musician (
 	id serial primary key,
-	album_id integer references album_List(id)
-	track_name varchar(80) not null,
-	track_time varchar(80) not null);
+	genres_id  integer references genres(id),
+	musician_id  integer references musicians(id)
+);
 
-create table if not exists collection_List(
+create table if not exists musicians_albums (
 	id serial primary key,
-	collection_name varchar(60) not null,
-	release_date  not null);
+	musician_id  integer references musicians(id),
+	album_id  integer references albums(id)
 
-create table if not exists collection_album_track(
+);
+
+create table if not exists composition_digest (
 	id serial primary key,
-	collection_id integer not null references collection_List(id),
-	album_id integer not null references album_List(id);
-	track_id integer not null references Track_List(id));
+	digest_id  integer references digests(id),
+	track_id  integer references tracks(id)
+);
